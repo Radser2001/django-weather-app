@@ -4,7 +4,9 @@
 
 ### Enter the name of the city and get the weather report
 
-#### Used the Django framework as the backend
+```
+This project is done using the Django framework
+```
 
 <h4>API used - <a href="https://openweathermap.org/">openweatherapi</a>
 
