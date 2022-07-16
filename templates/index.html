@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      .navbar {
+        background-color: #1976d2;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .navbar h1 {
+        font-weight: 900;
+        font-size: 40px;
+      }
+
+      .search-bar {
+        margin-top: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      input[type="text"] {
+        width: 60%;
+        padding: 10px;
+        outline: 0;
+        border-width: 0 0 2px;
+        border-color: #1976d2;
+        font-size: 20px;
+        color: #455a64;
+      }
+
+      input[type="text"]:focus {
+        border-color: #1976d2;
+      }
+
+      .submit-btn {
+        cursor: pointer;
+        height: 46px;
+        width: 10%;
+        background-color: #1976d2;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        border-radius: 5px 5px 5px 0;
+      }
+      .info-container {
+        color: #455a64;
+        margin: auto;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        padding-bottom: 10px;
+        border-radius: 10px;
+        text-align: center;
+        width: 90%;
+      }
+
+      .weather-info {
+        margin-top: 80px;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      .country-image {
+        border-radius: 10px;
+        width: 300px;
+        height: 180px;
+      }
+
+      .invalid-city {
+        text-align: center;
+        background-color: #ff3860;
+        width: 40%;
+        margin: auto;
+        margin-top: 100px;
+        padding: 50px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      strong {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+
+      .city-details,
+      .specific-details,
+      .simple-details {
+        height: 300px;
+        width: 90%;
+        margin: 10px;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #b3e5fc;
+        color: #757575;
+        box-shadow: 0 2px 3px rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 10%);
+      }
+
+      @media screen and (max-width: 900px) {
+        .submit-btn {
+          width: 20%;
+        }
+        .info-container {
+          text-align: center;
+        }
+        .weather-info {
+          display: inline-block;
+          text-align: left;
+        }
+        .city-details,
+        .specific-details,
+        .simple-details {
+          margin-bottom: 40px;
+          margin-right: 0;
+          margin-left: 0;
+        }
+
+        .info-container {
+          width: 60%;
+        }
+        @media screen and (max-width: 560px) {
+          .navbar {
+            max-width: 100%;
+          }
+          .country-image {
+            margin-top: 20px;
+            width: 240px;
+            height: 100px;
+          }
+        }
+        @media screen and (max-width: 560px) {
+          .city-details,
+          .specific-details,
+          .simple-details {
+            width: 80%;
+            padding: 30px;
+          }
+
+          .info-container {
+            display: flex;
+            flex-direction: column;
+          }
+          .country-image {
+            width: 160px;
+          }
+        }
+      }
+    </style>
+    <title>Weather App</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <h1 class="navbar-title">Weather App</h1>
+    </nav>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="search-bar">
+        <input type="text" name="city" placeholder="Enter a city..." />
+        <input class="submit-btn" type="submit" value="Search" />
+      </div>
+    </form>
+    {% for message in messages %}
+    <p class="invalid-city">{{message}}</p>
+    {% endfor %} {% if data.country_code %}
+    <div class="info-container">
+      <div class="weather-info">
+        <div class="city-details">
+          <h1>{{city | capfirst}}</h1>
+          <p class="country-code">
+            <strong>Country-code:</strong> {{data.country_code}}
+          </p>
+          <img
+            class="country-image"
+            src="https://countryflagsapi.com/png/{{data.country_code}}"
+            alt=""
+          />
+        </div>
+
+        <div class="specific-details">
+          <p class="coordinate">
+            <strong>Coordinates:</strong> {{data.coordinate}}
+          </p>
+          <p class="temp"><strong>Temperature:</strong> {{data.temp}}</p>
+          <p class="pressure"><strong>Pressure:</strong> {{data.pressure}}</p>
+          <p class="humidity"><strong>Humidity:</strong> {{data.humidity}}</p>
+        </div>
+        <div class="simple-details">
+          <p>{{data.weather.main}}</p>
+          <p>{{data.weather.description | capfirst}}</p>
+          <img
+            src="http://openweathermap.org/img/wn/{{data.weather.icon}}@2x.png"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </body>
+</html>
